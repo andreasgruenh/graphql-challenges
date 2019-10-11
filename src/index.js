@@ -8,18 +8,25 @@ const db = require("./db");
 // #endregion
 
 // #region steps
-// const UserRepository = require("./user/user.repository.01-unfinished-lazy");
+const UserRepository = require("./user/user.repository.01-unfinished-lazy");
 // const UserRepository = require("./user/user.repository.02-lazy");
 // const UserRepository = require("./user/user.repository.03-inmemory");
 // const UserRepository = require("./user/user.repository.04-batch-lazy-loading");
-const UserRepository = require("./user/user.repository.05-data-loader");
+// const UserRepository = require("./user/user.repository.05-data-loader");
 // #endregion
 
+// Instantiate express app
 const app = express();
+
+/**
+ * When using graphQL as a middleware, we can prepend arbitrary other middlewares
+ * This can be used for authentication or dependency instatiation.
+ **/
 
 app.use(async (req, res, next) => {
   db.resetQueryIndex();
 
+  // Each request gets its own userRepository
   const userRepository = new UserRepository();
   if (userRepository.init) {
     await userRepository.init();
