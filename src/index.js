@@ -8,8 +8,8 @@ const db = require("./db");
 // #endregion
 
 // #region steps
-const UserRepository = require("./user/user.repository.01-unfinished-lazy");
-// const UserRepository = require("./user/user.repository.02-lazy");
+// const UserRepository = require("./user/user.repository.01-unfinished-lazy");
+const UserRepository = require("./user/user.repository.02-lazy");
 // const UserRepository = require("./user/user.repository.03-inmemory");
 // const UserRepository = require("./user/user.repository.04-batch-lazy-loading");
 // const UserRepository = require("./user/user.repository.05-data-loader");
