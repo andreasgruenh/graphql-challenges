@@ -7,3 +7,7 @@ type User {
 type Query {
   user(id: Int): User
 }
+
+type Mutation {
+  setUserName(id: Int!, name: String!): User
+}

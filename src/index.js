@@ -41,11 +41,11 @@ app.use(
     schema,
     rootValue,
     graphiql: true,
-    customFormatErrorFn: formatError
+    customFormatErrorFn: formatError,
   })
 );
 
-app.listen(4000, () => console.log("Now browse to localhost:4000/graphql"));
+app.listen(4040, () => console.log("Now browse to localhost:4040/graphql"));
 
 // #region helpers
 function formatError(error) {

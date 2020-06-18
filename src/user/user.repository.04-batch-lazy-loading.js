@@ -10,7 +10,7 @@ class UserRepository {
   async getById(id) {
     const user = this.loadedUsersById[id] || (await userQueries.getById(id));
 
-    this.loadedUsersById[id] = new User(user, () => this.getFriends(id));
+    this.loadedUsersById[id] = { ...user, friends: () => this.getFriends(id) };
 
     return this.loadedUsersById[id];
   }
@@ -38,7 +38,7 @@ class UserRepository {
 
     usersWithoutLoadedFriends.forEach((id, index) => {
       const friendIds = friendIdsForUserIds[index];
-      const friends = friendIds.map(id => this.loadedUsersById[id]);
+      const friends = friendIds.map((id) => this.loadedUsersById[id]);
       this.loadedFriendsByUserId[id] = friends;
     });
     release();
@@ -50,7 +50,7 @@ class UserRepository {
   _getUserIdsWithoutLoadedFriends() {
     const loadedUserIds = Object.keys(this.loadedUsersById).map(Number);
     const usersWithoutLoadedFriends = loadedUserIds.filter(
-      id => !this.loadedFriendsByUserId[id]
+      (id) => !this.loadedFriendsByUserId[id]
     );
     return usersWithoutLoadedFriends;
   }
@@ -59,16 +59,17 @@ class UserRepository {
     const uniqFriendIds = [...new Set(friendIds)];
 
     const friendIdsWithoutLoadedUser = uniqFriendIds.filter(
-      id => !this.loadedUsersById[id]
+      (id) => !this.loadedUsersById[id]
     );
     if (friendIdsWithoutLoadedUser.length > 0) {
       const friendUserRows = await userQueries.getByIds(
         friendIdsWithoutLoadedUser
       );
-      friendUserRows.forEach(userRow => {
-        this.loadedUsersById[userRow.id] = new User(userRow, () =>
-          this.getFriends(userRow.id)
-        );
+      friendUserRows.forEach((userRow) => {
+        this.loadedUsersById[userRow.id] = {
+          ...userRow,
+          friends: () => this.getFriends(userRow.id),
+        };
       });
     }
   }

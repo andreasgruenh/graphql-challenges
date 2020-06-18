@@ -13,8 +13,8 @@ class UserRepository {
 
     usersById = {};
     const userRows = await userQueries.getAll();
-    userRows.forEach(u => {
-      usersById[u.id] = new User(u, []);
+    userRows.forEach((u) => {
+      usersById[u.id] = { ...u, friends: [] };
     });
 
     const friendPairs = await userQueries.getFriendPairs();
