@@ -1,7 +1,7 @@
-const db = require("../db")
+const db = require("../db");
 
 const userQueries = {
-  getById: id => {
+  getById: (id) => {
     return new Promise((resolve, reject) => {
       db.get(
         `
@@ -20,7 +20,7 @@ const userQueries = {
       );
     });
   },
-  getByIds: ids => {
+  getByIds: (ids) => {
     return new Promise((resolve, reject) => {
       db.all(
         `
@@ -34,15 +34,15 @@ const userQueries = {
             reject(new Error(err));
           } else {
             const userRowsById = {};
-            userRows.forEach(row => (userRowsById[row.id] = row));
-            const userRowsInCorrectOrder = ids.map(id => userRowsById[id]);
+            userRows.forEach((row) => (userRowsById[row.id] = row));
+            const userRowsInCorrectOrder = ids.map((id) => userRowsById[id]);
             resolve(userRowsInCorrectOrder);
           }
         }
       );
     });
   },
-  getFriendIds: userId => {
+  getFriendIds: (userId) => {
     return new Promise((resolve, reject) => {
       db.all(
         `
@@ -55,16 +55,16 @@ const userQueries = {
           if (err) {
             reject(new Error(err));
           } else {
-            const idPairs = resultRows.map(r => [r.user1Id, r.user2Id]);
+            const idPairs = resultRows.map((r) => [r.user1Id, r.user2Id]);
             const flattenedPairs = [].concat(...idPairs);
-            const friendIds = flattenedPairs.filter(id => id !== userId);
+            const friendIds = flattenedPairs.filter((id) => id !== userId);
             resolve(friendIds);
           }
         }
       );
     });
   },
-  getAllFriendIds: userIds => {
+  getAllFriendIds: (userIds) => {
     return new Promise((resolve, reject) => {
       const placeholders = new Array(userIds.length).fill("?").join(", ");
       db.all(
@@ -78,7 +78,7 @@ const userQueries = {
           if (err) {
             reject(new Error(err));
           } else {
-            const idPairs = resultRows.map(r => [r.user1Id, r.user2Id]);
+            const idPairs = resultRows.map((r) => [r.user1Id, r.user2Id]);
 
             const friendIdsByUserId = {};
             idPairs.forEach(([a, b]) => {
@@ -87,7 +87,7 @@ const userQueries = {
               friendIdsByUserId[a].push(b);
               friendIdsByUserId[b].push(a);
             });
-            resolve(userIds.map(userId => friendIdsByUserId[userId]));
+            resolve(userIds.map((userId) => friendIdsByUserId[userId]));
           }
         }
       );
@@ -121,13 +121,13 @@ const userQueries = {
           if (err) {
             reject(new Error(err));
           } else {
-            const idPairs = resultRows.map(r => [r.user1Id, r.user2Id]);
+            const idPairs = resultRows.map((r) => [r.user1Id, r.user2Id]);
             resolve(idPairs);
           }
         }
       );
     });
-  }
+  },
 };
 
 module.exports = userQueries;
