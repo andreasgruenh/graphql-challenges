@@ -2,6 +2,8 @@ const userQueries = require("./user/user.queries");
 
 const rootValue = {
   user: async ({ id }) => {
+    const repository = new UserRepository();
+    return repository.getById(id);
     const userRow = await userQueries.getById(id);
     return {
       id: id,
@@ -38,3 +40,5 @@ async function getUsersById() {
   });
   return usersById;
 }
+
+const UserRepository = require("./user/user.repository.05-data-loader");

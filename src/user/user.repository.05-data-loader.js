@@ -1,5 +1,4 @@
 const userQueries = require("./user.queries");
-const User = require("./user.entity");
 
 class UserRepository {
   userByIdDataLoader = new MyDataLoader(async (userIds) => {
